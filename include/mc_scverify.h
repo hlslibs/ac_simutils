@@ -4,7 +4,7 @@
  *                                                                        *
  *  Software Version: 1.0                                                 *
  *                                                                        *
- *  Release Date    : Thu Jun  4 12:22:48 PDT 2020                        *
+ *  Release Date    : Tue Aug 25 20:27:29 PDT 2020                        *
  *  Release Type    : Production Release                                  *
  *  Release Build   : 1.0.0                                               *
  *                                                                        *
@@ -168,6 +168,11 @@
   #define CCS_DESIGN(a) testbench::exec_##a
   #define CCS_MAIN(a,b) int testbench::main()
   #define CCS_CLK_CTOR(clkobj,name_,period_v_,period_tu_,duty_cycle_,start_time_v_,start_time_tu_,posedge_first_) clkobj(name_,scverify_lookup_clk(name_,period_v_,period_tu_),duty_cycle_,sc_time(start_time_v_,start_time_tu_),posedge_first_)
+  
+  #if !defined(SYSTEMC_INCLUDED) && defined(__AESL_AP_SIM_H__) || defined(__AP_INT_H__)
+    #error systemc.h must be included before the Xilinx AP types.
+  #endif
+
 
   #if defined(CCS_SCVERIFY) && !defined(CCS_SCVERIFY_USE_CCS_BLOCK)
     #include <mc_testbench.h>
