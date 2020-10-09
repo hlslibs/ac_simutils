@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Simulation Utilities                               *
  *                                                                        *
- *  Software Version: 1.1                                                 *
+ *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Tue Aug 25 20:28:38 PDT 2020                        *
+ *  Release Date    : Fri Oct  9 13:45:09 PDT 2020                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.1.0                                               *
+ *  Release Build   : 1.2.0                                               *
  *                                                                        *
  *  Copyright , Mentor Graphics Corporation,                     *
  *                                                                        *
