@@ -4,9 +4,9 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Wed Oct 14 16:11:58 PDT 2020                        *
+ *  Release Date    : Wed Oct 14 16:16:08 PDT 2020                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.1                                               *
+ *  Release Build   : 1.2.2                                               *
  *                                                                        *
  *  Copyright , Mentor Graphics Corporation,                     *
  *                                                                        *
