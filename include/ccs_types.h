@@ -4,7 +4,7 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Tue Oct 13 21:17:53 PDT 2020                        *
+ *  Release Date    : Wed Oct 14 16:11:58 PDT 2020                        *
  *  Release Type    : Production Release                                  *
  *  Release Build   : 1.2.1                                               *
  *                                                                        *
@@ -48,7 +48,7 @@
 //
 // The design information contained in this file is intended to be an example
 // of the functionality which the end user may study in preparation for creating
-// their own custom interfaces. This design does not necessarily present a 
+// their own custom interfaces. This design does not necessarily present a
 // complete implementation of the named protocol or standard.
 //
 //------------------------------------------------------------------------------
@@ -86,7 +86,8 @@
 //  AUTO - Default setting.  Channel is TLM in source simulation and SYN for synthesis and SCVerify.
 enum abstraction_t {TLM = 0, SYN = 1, AUTO = 2};
 
-namespace mc_typedef_T_traits_private {
+namespace mc_typedef_T_traits_private
+{
   // helper structs for statically computing log2 like functions (nbits, log2_floor, log2_ceil)
   //   using recursive templates
   template<unsigned char N>
@@ -111,7 +112,7 @@ namespace mc_typedef_T_traits_private {
 // compiler time constant for log2 like functions
 template<unsigned X>
 struct nbits {
-   enum { val = mc_typedef_T_traits_private::s_N<16>::s_X<X>::nbits };
+  enum { val = mc_typedef_T_traits_private::s_N<16>::s_X<X>::nbits };
 };
 
 
@@ -120,188 +121,188 @@ template <class T> struct mc_typedef_T_traits;
 
 // INT <-> SC_LV
 template <>
-struct mc_typedef_T_traits< int > { 
-   enum { bitwidth = 32,
-          issigned = 1
-        }; 
+struct mc_typedef_T_traits< int > {
+  enum { bitwidth = 32,
+         issigned = 1
+       };
 };
 
 // UINT <-> SC_LV
 template <>
-struct mc_typedef_T_traits< unsigned int > { 
-   enum { bitwidth = 32,
-          issigned = 0
-        }; 
+struct mc_typedef_T_traits< unsigned int > {
+  enum { bitwidth = 32,
+         issigned = 0
+       };
 };
 
 // SHORT <-> SC_LV
 template <>
-struct mc_typedef_T_traits< short > { 
-   enum { bitwidth = 32,
-          issigned = 1
-        }; 
+struct mc_typedef_T_traits< short > {
+  enum { bitwidth = 32,
+         issigned = 1
+       };
 };
 
 // USHORT <-> SC_LV
 template <>
-struct mc_typedef_T_traits< unsigned short > { 
-   enum { bitwidth = 32,
-          issigned = 0
-        }; 
+struct mc_typedef_T_traits< unsigned short > {
+  enum { bitwidth = 32,
+         issigned = 0
+       };
 };
 
 // CHAR <-> SC_LV
 template <>
-struct mc_typedef_T_traits< char > { 
-   enum { bitwidth = 32,
-          issigned = 1
-        }; 
+struct mc_typedef_T_traits< char > {
+  enum { bitwidth = 32,
+         issigned = 1
+       };
 };
 
 // UCHAR <-> SC_LV
 template <>
-struct mc_typedef_T_traits< unsigned char > { 
-   enum { bitwidth = 32,
-          issigned = 0
-        }; 
+struct mc_typedef_T_traits< unsigned char > {
+  enum { bitwidth = 32,
+         issigned = 0
+       };
 };
 
 // LONG LONG <-> SC_LV
 template <>
 struct mc_typedef_T_traits< long long > {
-   enum { bitwidth = 64,
-          issigned = 1
-        };
+  enum { bitwidth = 64,
+         issigned = 1
+       };
 };
 
 // ULONG LONG <-> SC_LV
 template <>
 struct mc_typedef_T_traits< unsigned long long > {
-   enum { bitwidth = 64,
-          issigned = 0
-        };
+  enum { bitwidth = 64,
+         issigned = 0
+       };
 };
 
 // LONG <-> SC_LV
 template <>
 struct mc_typedef_T_traits< long > {
-   enum { bitwidth = 32,
-          issigned = 1
-        };
+  enum { bitwidth = 32,
+         issigned = 1
+       };
 };
 
 // ULONG <-> SC_LV
 template <>
 struct mc_typedef_T_traits< unsigned long > {
-   enum { bitwidth = 32,
-          issigned = 0
-        };
+  enum { bitwidth = 32,
+         issigned = 0
+       };
 };
 
 // BOOL <-> SC_LV
 template <>
-struct mc_typedef_T_traits< bool > { 
-   enum { bitwidth = 1,
-          issigned = 0
-        }; 
+struct mc_typedef_T_traits< bool > {
+  enum { bitwidth = 1,
+         issigned = 0
+       };
 };
 
 
 // SC_LV <-> SC_LV
 template <int Twidth>
-struct mc_typedef_T_traits< sc_lv<Twidth> > { 
-   enum { bitwidth = Twidth,
-          issigned = 0
-        }; 
+struct mc_typedef_T_traits< sc_lv<Twidth> > {
+  enum { bitwidth = Twidth,
+         issigned = 0
+       };
 };
 
 // SC_UINT <-> SC_LV
 template <int Twidth>
-struct mc_typedef_T_traits< sc_uint<Twidth> > { 
-   enum { bitwidth = Twidth,
-          issigned = 0
-        }; 
+struct mc_typedef_T_traits< sc_uint<Twidth> > {
+  enum { bitwidth = Twidth,
+         issigned = 0
+       };
 };
 
 // SC_BV <-> SC_LV
 template <int Twidth>
 struct mc_typedef_T_traits< sc_bv<Twidth> > {
-   enum { bitwidth = Twidth,
-          issigned = 0
-        };
+  enum { bitwidth = Twidth,
+         issigned = 0
+       };
 };
 
 // SC_BIT <-> SC_LV
 template<>
 struct mc_typedef_T_traits< sc_bit > {
-   enum { bitwidth = 1,
-          issigned = 0
-        };
+  enum { bitwidth = 1,
+         issigned = 0
+       };
 };
 
 // SC_INT <-> SC_LV
 template <int Twidth>
-struct mc_typedef_T_traits< sc_int<Twidth> > { 
-   enum { bitwidth = Twidth,
-          issigned = 1
-        }; 
+struct mc_typedef_T_traits< sc_int<Twidth> > {
+  enum { bitwidth = Twidth,
+         issigned = 1
+       };
 };
 
 // SC_BIGUINT <-> SC_LV
 template <int Twidth>
-struct mc_typedef_T_traits< sc_biguint<Twidth> > { 
-   enum { bitwidth = Twidth,
-          issigned = 0
-        }; 
+struct mc_typedef_T_traits< sc_biguint<Twidth> > {
+  enum { bitwidth = Twidth,
+         issigned = 0
+       };
 };
 
 // SC_BIGINT <-> SC_LV
 template <int Twidth>
-struct mc_typedef_T_traits< sc_bigint<Twidth> > { 
-   enum { bitwidth = Twidth,
-          issigned = 1
-        }; 
+struct mc_typedef_T_traits< sc_bigint<Twidth> > {
+  enum { bitwidth = Twidth,
+         issigned = 1
+       };
 };
 
 #if defined(SC_INCLUDE_FX)
 // SC_FIXED <-> SC_LV
 template<int Twidth, int Ibits, sc_q_mode Qmode, sc_o_mode Omode, int Nbits>
-struct mc_typedef_T_traits< sc_fixed<Twidth,Ibits,Qmode,Omode,Nbits> > { 
-   enum { bitwidth = Twidth,
-          issigned = 1
-        }; 
+struct mc_typedef_T_traits< sc_fixed<Twidth,Ibits,Qmode,Omode,Nbits> > {
+  enum { bitwidth = Twidth,
+         issigned = 1
+       };
 };
 // SC_UFIXED <-> SC_LV
 template<int Twidth, int Ibits, sc_q_mode Qmode, sc_o_mode Omode, int Nbits>
 struct mc_typedef_T_traits< sc_ufixed<Twidth,Ibits,Qmode,Omode,Nbits> > {
-   enum { bitwidth = Twidth,
-          issigned = 0
-        };
+  enum { bitwidth = Twidth,
+         issigned = 0
+       };
 };
 #endif
 
 // AC_INT (signed) <-> SC_LV
 template <int Twidth>
-struct mc_typedef_T_traits< ac_int<Twidth,true> > { 
-   enum { bitwidth = Twidth,
-          issigned = 1
-        }; 
+struct mc_typedef_T_traits< ac_int<Twidth,true> > {
+  enum { bitwidth = Twidth,
+         issigned = 1
+       };
 };
 
 // AC_INT (unsigned) <-> SC_LV
 template <int Twidth>
-struct mc_typedef_T_traits< ac_int<Twidth,false> > { 
-   enum { bitwidth = Twidth,
-          issigned = 0
-        }; 
+struct mc_typedef_T_traits< ac_int<Twidth,false> > {
+  enum { bitwidth = Twidth,
+         issigned = 0
+       };
 };
 
 // AC_FIXED (signed) <-> SC_LV
 template<int Twidth, int Ibits, bool Signed, ac_q_mode Qmode, ac_o_mode Omode>
-struct mc_typedef_T_traits< ac_fixed<Twidth,Ibits,Signed,Qmode,Omode> > { 
-   enum { bitwidth = Twidth,
-          issigned = Signed?1:0
-        }; 
+struct mc_typedef_T_traits< ac_fixed<Twidth,Ibits,Signed,Qmode,Omode> > {
+  enum { bitwidth = Twidth,
+         issigned = Signed?1:0
+       };
 };
 
 #ifdef __AC_FLOAT_H
@@ -309,69 +310,71 @@ struct mc_typedef_T_traits< ac_fixed<Twidth,Ibits,Signed,Qmode,Omode> > {
 // AC_FLOAT (unsigned only) <-> SC_LV
 template<int MTbits, int MIbits, int Ebits, ac_q_mode Qmode>
 struct mc_typedef_T_traits<ac_float<MTbits,MIbits,Ebits,Qmode> > {
-    enum { bitwidth = MTbits+Ebits,
-           issigned = 0
-         };
+  enum { bitwidth = MTbits+Ebits,
+         issigned = 0
+       };
 };
 #endif
 
 template<class T>  // Template arguments may be added as needed
 struct mc_typedef_T_traits< ac_complex<T> > {
-    enum { bitwidth = mc_typedef_T_traits<T>::bitwidth * 2, // Requires bitwidth trait for based type
-           issigned = false
-    };
+  enum { bitwidth = mc_typedef_T_traits<T>::bitwidth * 2, // Requires bitwidth trait for based type
+         issigned = false
+       };
 };
 
 template<class T>
-   inline  void type_to_vector(const ac_complex<T> &in, int length, sc_lv<mc_typedef_T_traits< ac_complex<T> >::bitwidth> & rvec) {
-    sc_lv<mc_typedef_T_traits<T>::bitwidth> vec_r, vec_i;
-    type_to_vector(in.r(),mc_typedef_T_traits<T>::issigned,vec_r);
-    type_to_vector(in.i(),mc_typedef_T_traits<T>::issigned,vec_i);
-    rvec = (vec_r << mc_typedef_T_traits<T>::bitwidth) | vec_i;
+inline  void type_to_vector(const ac_complex<T> &in, int length, sc_lv<mc_typedef_T_traits< ac_complex<T> >::bitwidth> &rvec)
+{
+  sc_lv<mc_typedef_T_traits<T>::bitwidth> vec_r, vec_i;
+  type_to_vector(in.r(),mc_typedef_T_traits<T>::issigned,vec_r);
+  type_to_vector(in.i(),mc_typedef_T_traits<T>::issigned,vec_i);
+  rvec = (vec_r << mc_typedef_T_traits<T>::bitwidth) | vec_i;
 }
 
 template<class T>
-    inline  void vector_to_type(const sc_lv<mc_typedef_T_traits< ac_complex<T> >::bitwidth> &in, bool issigned, ac_complex<T> *result) {
-    sc_lv<mc_typedef_T_traits<T>::bitwidth> vec_r, vec_i;
-    vec_r = in >> mc_typedef_T_traits<T>::bitwidth;
-    vec_i = in;
-    T r, i;
-    vector_to_type(vec_r,mc_typedef_T_traits<T>::issigned,&r);
-    vector_to_type(vec_i,mc_typedef_T_traits<T>::issigned,&i);
-    result->set_r(r);
-    result->set_i(i);
+inline  void vector_to_type(const sc_lv<mc_typedef_T_traits< ac_complex<T> >::bitwidth> &in, bool issigned, ac_complex<T> *result)
+{
+  sc_lv<mc_typedef_T_traits<T>::bitwidth> vec_r, vec_i;
+  vec_r = in >> mc_typedef_T_traits<T>::bitwidth;
+  vec_i = in;
+  T r, i;
+  vector_to_type(vec_r,mc_typedef_T_traits<T>::issigned,&r);
+  vector_to_type(vec_i,mc_typedef_T_traits<T>::issigned,&i);
+  result->set_r(r);
+  result->set_i(i);
 }
 
 // Helper Classes for checking that reset was called and all ports are bound
-class p2p_checker {
+class p2p_checker
+{
   mutable bool is_ok;
-  #ifndef __SYNTHESIS__
+#ifndef __SYNTHESIS__
   const char *objname;
   std::stringstream error_string;
-  #endif
- 
+#endif
+
 public:
-  p2p_checker (const char *name, const char *func_name, const char *operation) : 
-    is_ok(false) 
-    {
-    #ifndef __SYNTHESIS__
-      objname = name;
-      error_string << "You must " << func_name << " before you can " << operation << ".";
-    #endif
-    }
- 
+  p2p_checker (const char *name, const char *func_name, const char *operation) :
+    is_ok(false) {
+#ifndef __SYNTHESIS__
+    objname = name;
+    error_string << "You must " << func_name << " before you can " << operation << ".";
+#endif
+  }
+
   inline void ok () {
     is_ok = true;
   }
 
   inline void test () const {
-  #ifndef __SYNTHESIS__
+#ifndef __SYNTHESIS__
     if ( !is_ok ) {
       SC_REPORT_ERROR(objname, error_string.str().c_str());
       is_ok = true; // Only report error message one time
     }
-  #endif
-  } 
+#endif
+  }
 };
 
 #endif

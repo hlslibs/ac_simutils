@@ -4,7 +4,7 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Tue Oct 13 21:17:53 PDT 2020                        *
+ *  Release Date    : Wed Oct 14 16:11:58 PDT 2020                        *
  *  Release Type    : Production Release                                  *
  *  Release Build   : 1.2.1                                               *
  *                                                                        *
@@ -30,13 +30,13 @@
  *  The most recent version of this package is available at github.       *
  *                                                                        *
  *************************************************************************/
-#ifndef _INCLUDE_AC_SYSC_MACROS_H_ 
-#define _INCLUDE_AC_SYSC_MACROS_H_ 
+#ifndef _INCLUDE_AC_SYSC_MACROS_H_
+#define _INCLUDE_AC_SYSC_MACROS_H_
 
 #include <systemc.h>
 
 //
-// ac_sysc_macros.h 
+// ac_sysc_macros.h
 //
 // Helpful macros for coding SystemC designs.
 //
@@ -45,7 +45,7 @@
 //  Useful for declaring a port constructor with the port name.
 //
 // Usage:
-//   sc_in<type>  CCS_INIT_S1(din); 
+//   sc_in<type>  CCS_INIT_S1(din);
 //
 // Results in:
 //   din{"din"};

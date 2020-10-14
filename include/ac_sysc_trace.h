@@ -4,7 +4,7 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Tue Oct 13 21:17:53 PDT 2020                        *
+ *  Release Date    : Wed Oct 14 16:11:58 PDT 2020                        *
  *  Release Type    : Production Release                                  *
  *  Release Build   : 1.2.1                                               *
  *                                                                        *
@@ -30,11 +30,11 @@
  *  The most recent version of this package is available at github.       *
  *                                                                        *
  *************************************************************************/
-#ifndef _INCLUDE_AC_SYSC_TRACE_H_ 
-#define _INCLUDE_AC_SYSC_TRACE_H_ 
+#ifndef _INCLUDE_AC_SYSC_TRACE_H_
+#define _INCLUDE_AC_SYSC_TRACE_H_
 
 //
-// ac_sysc_trace.h 
+// ac_sysc_trace.h
 //
 // Helpful macros and functionality for simulation trace SystemC designs.
 //
@@ -43,14 +43,15 @@
 
 //
 // The SC_SIG, SC_VAR, and SC_VAR_NM  macros assume a mechanism to get an open sc_trace_file
-// This is the mechanism pto provide that 
+// This is the mechanism pto provide that
 // See: https://stackoverflow.com/questions/18860895/how-to-initialize-static-members-in-the-header
 //
 // In sc_main, do this:
 // sc_trace_file *trace_file = sc_trace_static::setup_trace_file("trace");
 //
-class sc_trace_static {
- public:
+class sc_trace_static
+{
+public:
   sc_trace_static() {}
   ~sc_trace_static() {(void) static_accessor(0,true);}
 
@@ -63,7 +64,7 @@ class sc_trace_static {
       sc_close_vcd_trace_file(staticPtr);
     }
 
-    return(staticPtr);
+    return (staticPtr);
   }
 
   static sc_trace_file *setup_trace_file(const char *fname) {
@@ -78,17 +79,17 @@ class sc_trace_static {
       }
       (void) static_accessor(retPtr);
     }
-    return(retPtr);
+    return (retPtr);
   }
 };
 
 #ifndef _CCS_OLD_CONNECTIONS_
 //
-// sc_trace helpers used when the below macros are used to declared variables 
+// sc_trace helpers used when the below macros are used to declared variables
 // and signals which are to be traced.
 template <class T>
 struct sc_object_tracer {
-  sc_object_tracer(T& obj) {
+  sc_object_tracer(T &obj) {
     sc_trace(sc_trace_static::static_accessor(), obj, obj.name());
   }
   ~sc_object_tracer() {}
@@ -96,18 +97,18 @@ struct sc_object_tracer {
 
 template <class T>
 struct sc_var_tracer {
-  sc_var_tracer(T& obj, const std::string& nm)  {
+  sc_var_tracer(T &obj, const std::string &nm)  {
     sc_trace(sc_trace_static::static_accessor(), obj, nm);
   }
   ~sc_var_tracer() {}
 };
 
-#else 
+#else
 // Hardwired for this global fileptr
-extern sc_trace_file* trace_file_ptr;
+extern sc_trace_file *trace_file_ptr;
 template <class T>
 struct sc_object_tracer {
-  sc_object_tracer(T& obj) {
+  sc_object_tracer(T &obj) {
     sc_trace(trace_file_ptr, obj, obj.name());
   }
   ~sc_object_tracer() {}
@@ -115,7 +116,7 @@ struct sc_object_tracer {
 
 template <class T>
 struct sc_var_tracer {
-  sc_var_tracer(T& obj, const std::string& nm)  {
+  sc_var_tracer(T &obj, const std::string &nm)  {
     sc_trace(trace_file_ptr, obj, nm);
   }
   ~sc_var_tracer() {}
@@ -141,17 +142,17 @@ struct sc_var_tracer {
 #define SC_VAR(T,N) T N ; sc_var_tracer<T> N ## _tracer { N, std::string(name()) + std::string(".") + #N }
 #define SC_VAR_NM(T,N, NM) T N ; sc_var_tracer<T> N ## _tracer { N, std::string(NM) + std::string(".") + #N }
 #else
-#define SC_SIG(T,N) sc_signal<T> N{#N}  
-#define SC_VAR(T,N) T N 
-#define SC_VAR_NM(T,N, NM) T N 
+#define SC_SIG(T,N) sc_signal<T> N{#N}
+#define SC_VAR(T,N) T N
+#define SC_VAR_NM(T,N, NM) T N
 #endif
 #endif
 
 
 /**
- * Example of how to enable tracing for user defined structs:  
+ * Example of how to enable tracing for user defined structs:
  * The inline function is of interest.
- * 
+ *
 
 struct MyType
 {
