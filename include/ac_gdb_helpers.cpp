@@ -4,14 +4,12 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Wed Oct 14 16:16:08 PDT 2020                        *
+ *  Release Date    : Mon Nov  1 06:38:13 PDT 2021                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.2                                               *
+ *  Release Build   : 1.2.3                                               *
  *                                                                        *
- *  Copyright , Mentor Graphics Corporation,                     *
+ *  Copyright 2020 Siemens                                                *
  *                                                                        *
- *  All Rights Reserved.                                                  *
- *  
  **************************************************************************
  *  Licensed under the Apache License, Version 2.0 (the "License");       *
  *  you may not use this file except in compliance with the License.      * 
@@ -30,7 +28,6 @@
  *  The most recent version of this package is available at github.       *
  *                                                                        *
  *************************************************************************/
-
 // This file contains functions that can be called from the GDB prompt during debug.
 
 // Use this to print out help text for these functions

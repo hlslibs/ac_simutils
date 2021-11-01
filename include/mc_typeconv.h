@@ -4,14 +4,12 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Wed Oct 14 16:16:08 PDT 2020                        *
+ *  Release Date    : Mon Nov  1 06:38:13 PDT 2021                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.2                                               *
+ *  Release Build   : 1.2.3                                               *
  *                                                                        *
- *  Copyright , Mentor Graphics Corporation,                     *
+ *  Copyright 2020 Siemens                                                *
  *                                                                        *
- *  All Rights Reserved.                                                  *
- *  
  **************************************************************************
  *  Licensed under the Apache License, Version 2.0 (the "License");       *
  *  you may not use this file except in compliance with the License.      * 
@@ -832,7 +830,7 @@ inline void vector_to_type(const sc_lv<16> &in, bool issigned, ac::bfloat16 *res
 #undef _IEEE_EWIDTH_
 #endif
 
-#if !defined(MC_TYPECONV_H_AP_INT) && defined(__AESL_AP_SIM_H__) || defined(__AP_INT_H__)
+#if !defined(MC_TYPECONV_H_AP_INT) && (defined(__AESL_AP_SIM_H__) || defined(__AP_INT_H__))
 #define MC_TYPECONV_H_AP_INT
 
 //Explicit conversions from sc_bigint => ap_int and sc_biguint => ap_uint

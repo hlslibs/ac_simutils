@@ -4,14 +4,12 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Wed Oct 14 16:16:08 PDT 2020                        *
+ *  Release Date    : Mon Nov  1 06:38:13 PDT 2021                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.2                                               *
+ *  Release Build   : 1.2.3                                               *
  *                                                                        *
- *  Copyright , Mentor Graphics Corporation,                     *
+ *  Copyright 2020 Siemens                                                *
  *                                                                        *
- *  All Rights Reserved.                                                  *
- *  
  **************************************************************************
  *  Licensed under the Apache License, Version 2.0 (the "License");       *
  *  you may not use this file except in compliance with the License.      * 
@@ -138,7 +136,7 @@ struct mc_typedef_T_traits< unsigned int > {
 // SHORT <-> SC_LV
 template <>
 struct mc_typedef_T_traits< short > {
-  enum { bitwidth = 32,
+  enum { bitwidth = 16,
          issigned = 1
        };
 };
@@ -146,7 +144,7 @@ struct mc_typedef_T_traits< short > {
 // USHORT <-> SC_LV
 template <>
 struct mc_typedef_T_traits< unsigned short > {
-  enum { bitwidth = 32,
+  enum { bitwidth = 16,
          issigned = 0
        };
 };
@@ -154,7 +152,7 @@ struct mc_typedef_T_traits< unsigned short > {
 // CHAR <-> SC_LV
 template <>
 struct mc_typedef_T_traits< char > {
-  enum { bitwidth = 32,
+  enum { bitwidth = 8,
          issigned = 1
        };
 };
@@ -162,7 +160,7 @@ struct mc_typedef_T_traits< char > {
 // UCHAR <-> SC_LV
 template <>
 struct mc_typedef_T_traits< unsigned char > {
-  enum { bitwidth = 32,
+  enum { bitwidth = 8,
          issigned = 0
        };
 };
