@@ -4,9 +4,9 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Mon Nov  1 06:38:13 PDT 2021                        *
+ *  Release Date    : Wed Jun 29 15:12:33 PDT 2022                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.3                                               *
+ *  Release Build   : 1.2.4                                               *
  *                                                                        *
  *  Copyright 2020 Siemens                                                *
  *                                                                        *
@@ -430,24 +430,6 @@ void vector_to_type_builtin_64(const sc_lv<Twidth> &in, bool issigned, T *result
   }
 }
 
-// ---------------------------------------------------------
-// --------------------------------- DOUBLE
-template<int Twidth>
-void vector_to_type(const sc_lv<Twidth> &in, bool issigned, double *result)
-{
-//#error \'Double\' datatype is unsupported for vector_to_type function
-}
-// ---------------------------------------------------------
-
-// ---------------------------------------------------------
-// --------------------------------- FLOAT
-template<int Twidth>
-void vector_to_type(const sc_lv<Twidth> &in, bool issigned, float *result)
-{
-//#error \'Float\' datatype is unsupported for vector_to_type function
-}
-// ---------------------------------------------------------
-
 
 // ---------------------------------------------------------
 // --------------------------------- GENERIC
@@ -611,6 +593,45 @@ void vector_to_type(const sc_lv<Twidth> &in, bool issigned, unsigned long long *
 {
   vector_to_type_builtin_64(in, issigned, result);
 }
+
+// ---------------------------------------------------------
+// --------------------------------- DOUBLE
+template <int Twidth>
+void type_to_vector(const double &in, int length, sc_lv<Twidth> &rvec)
+{
+  long long tmp;
+  std::memcpy(&tmp, &in, sizeof(double));
+  type_to_vector(tmp, length, rvec);
+}
+
+template<int Twidth>
+void vector_to_type(const sc_lv<Twidth> &in, bool issigned, double *result)
+{
+  long long res;
+  vector_to_type(in, issigned, &res);
+  std::memcpy(result, &res, sizeof(double));
+}
+// ---------------------------------------------------------
+
+// ---------------------------------------------------------
+// --------------------------------- FLOAT
+template <int Twidth>
+void type_to_vector(const float &in, int length, sc_lv<Twidth> &rvec)
+{
+  int tmp;
+  std::memcpy(&tmp, &in, sizeof(float));
+  type_to_vector(tmp, length, rvec);
+}
+
+template<int Twidth>
+void vector_to_type(const sc_lv<Twidth> &in, bool issigned, float *result)
+{
+  int res;
+  vector_to_type(in, issigned, &res);
+  std::memcpy(result, &res, sizeof(float));
+}
+// ---------------------------------------------------------
+
 
 // ---------------------------------------------------------
 // --------------------------------- CONTAINER

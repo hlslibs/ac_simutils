@@ -4,9 +4,9 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Mon Nov  1 06:38:13 PDT 2021                        *
+ *  Release Date    : Wed Jun 29 15:12:33 PDT 2022                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.3                                               *
+ *  Release Build   : 1.2.4                                               *
  *                                                                        *
  *  Copyright 2020 Siemens                                                *
  *                                                                        *
@@ -56,7 +56,7 @@
 #if !defined(_MSC_VER)
 #warning Call-stack tracking and end-of-execution cover() summary is not available on non-Microsoft Compilers
 #else
-#if (_MSC_VER < 1400) || (NTDDI_VERSION < NTDDI_WS03)
+#if (_MSC_VER < 1400) || (NTDDI_VERSION <= NTDDI_WINXP)
 #pragma message("Call-stack tracking and end-of-execution cover() summary requires Visual Studio 8 or newer")
 #else
 #define AC_COVER_USES_STACK
