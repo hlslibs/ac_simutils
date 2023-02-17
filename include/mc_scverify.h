@@ -4,9 +4,9 @@
  *                                                                        *
  *  Software Version: 1.2                                                 *
  *                                                                        *
- *  Release Date    : Wed Jun 29 15:12:33 PDT 2022                        *
+ *  Release Date    : Fri Jan 20 13:17:12 PST 2023                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.4                                               *
+ *  Release Build   : 1.2.6                                               *
  *                                                                        *
  *  Copyright 2020 Siemens                                                *
  *                                                                        *
@@ -179,10 +179,17 @@
 #else
   //---------------------------------------------------------
   // No special verification mode
+#if defined(__MATLAB_CATAPULT__)
+  //---------------------------------------------------------
+  // Leverage the SCVerify CCS_MAIN macro to hide any C++ main()
+  // from compilation of a Matlab m-function or s-function.
+  #define CCS_MAIN(a,b) template <int unused_template>int dummy_main(a,b)
+#else
+  #define CCS_MAIN(a,b) int main(a,b)
+#endif
   #define CCS_PRIVATE private
   #define CCS_PROTECTED protected
   #define CCS_DESIGN(a) a
-  #define CCS_MAIN(a,b) int main(a,b)
   #define CCS_RETURN(a) return(a)
   #define CCS_CLK_CTOR(clkobj,name_,period_v_,period_tu_,duty_cycle_,start_time_v_,start_time_tu_,posedge_first_) clkobj(name_,sc_time(period_v_,period_tu_),duty_cycle_,sc_time(start_time_v_,start_time_tu_),posedge_first_)
 
@@ -233,24 +240,28 @@ inline sc_time scverify_lookup_clk(const char *clkname, double default_period, s
 #endif // MC_SCVERIFY_H_INC
 
 //---------------------------------------------------------
-#ifdef __SYNTHESIS__
-  #define CCS_BLOCK(fn) fn
+#if !defined(__SYNTHESIS__) && defined(CCS_SCVERIFY) && defined(CCS_SCVERIFY_USE_CCS_BLOCK)
+  #undef CCS_DESIGN
+  #define CCS_DESIGN(fn) fn
+  #include "ccs_block_macros.h"
+
+  #define __CCS_BLOCK_TOKENPASTE2(a, b)    ccs_intercept_ ## a ##_## b
+  #define __CCS_BLOCK_TOKENPASTE3(a, b, c) ccs_intercept_ ## a ##_## b ##_## c
+  #define  _CCS_BLOCK_TOKENPASTE2(a, b)    __CCS_BLOCK_TOKENPASTE2(a,b)
+  #define  _CCS_BLOCK_TOKENPASTE3(a, b, c) __CCS_BLOCK_TOKENPASTE3(a,b,c)
+  #define  _CCS_BLOCK_TOKENPASTE(a, b, c, ...) c
+  #define CCS_BLOCK(...) _CCS_BLOCK_TOKENPASTE(__VA_ARGS__, \
+                         _CCS_BLOCK_TOKENPASTE3, _CCS_BLOCK_TOKENPASTE2)(__VA_ARGS__,__LINE__)
 #else
-  #if !defined(CCS_SCVERIFY) || !defined(CCS_SCVERIFY_USE_CCS_BLOCK)
-    #define CCS_BLOCK(fn) fn
-  #else
-    #undef CCS_DESIGN
-    #define CCS_DESIGN(fn) fn
+  #define _CCS_BLOCK_BYPASS1(a) a
+  #define _CCS_BLOCK_BYPASS2(a, b) b
+  #define _CCS_BLOCK_BYPASS(a, b, c, ...) c
+  #define CCS_BLOCK(...) _CCS_BLOCK_BYPASS(__VA_ARGS__, \
+                         _CCS_BLOCK_BYPASS2, _CCS_BLOCK_BYPASS1)(__VA_ARGS__)
+#endif //__SYNTHESIS__...
 
-    #include "ccs_block_macros.h"
-    #define CCS_BLOCK_TOKENPASTE(x,y) ccs_intercept_ ## x ##_## y
-    #define CCS_BLOCK_TOKENPASTE2(x,y) CCS_BLOCK_TOKENPASTE(x,y)
-    #define CCS_BLOCK(a) CCS_BLOCK_TOKENPASTE2(a,__LINE__)
-
-    #ifdef __AC_ASSERT_H__
-    // Make sure 'ac_assert' overrides assert.h redefines
-    #include <ac_assert.h>
-    #endif
-  #endif
+#ifdef __AC_ASSERT_H__
+// Make sure 'ac_assert' overrides assert.h redefines
+#include <ac_assert.h>
 #endif
 //---------------------------------------------------------
