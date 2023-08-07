@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Simulation Utilities                               *
  *                                                                        *
- *  Software Version: 1.2                                                 *
+ *  Software Version: 1.4                                                 *
  *                                                                        *
- *  Release Date    : Fri Jan 20 13:17:12 PST 2023                        *
+ *  Release Date    : Mon Jul 17 20:14:44 PDT 2023                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.6                                               *
+ *  Release Build   : 1.4.0                                               *
  *                                                                        *
  *  Copyright 2020 Siemens                                                *
  *                                                                        *

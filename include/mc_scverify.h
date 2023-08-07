@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Simulation Utilities                               *
  *                                                                        *
- *  Software Version: 1.2                                                 *
+ *  Software Version: 1.4                                                 *
  *                                                                        *
- *  Release Date    : Fri Jan 20 13:17:12 PST 2023                        *
+ *  Release Date    : Mon Jul 17 20:14:44 PDT 2023                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.6                                               *
+ *  Release Build   : 1.4.0                                               *
  *                                                                        *
  *  Copyright 2020 Siemens                                                *
  *                                                                        *
@@ -112,7 +112,7 @@
 
   // Macro expands out to sc_module created in sysc_sim.cpp that
   // encapsulates the RTL instance and corresponding transactors
-  #define CCS_DESIGN(a) CCS_RTL::sysc_sim_wrapper
+  #define CCS_DESIGN(...) CCS_RTL::sysc_sim_wrapper
   #define CCS_CLK_CTOR(clkobj,name_,period_v_,period_tu_,duty_cycle_,start_time_v_,start_time_tu_,posedge_first_) clkobj(name_,scverify_lookup_clk(name_,period_v_,period_tu_),duty_cycle_,sc_time(start_time_v_,start_time_tu_),posedge_first_)
 
   #ifndef SC_USE_STD_STRING
@@ -189,7 +189,7 @@
 #endif
   #define CCS_PRIVATE private
   #define CCS_PROTECTED protected
-  #define CCS_DESIGN(a) a
+  #define CCS_DESIGN(...) __VA_ARGS__
   #define CCS_RETURN(a) return(a)
   #define CCS_CLK_CTOR(clkobj,name_,period_v_,period_tu_,duty_cycle_,start_time_v_,start_time_tu_,posedge_first_) clkobj(name_,sc_time(period_v_,period_tu_),duty_cycle_,sc_time(start_time_v_,start_time_tu_),posedge_first_)
 

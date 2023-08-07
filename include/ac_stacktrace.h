@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Simulation Utilities                               *
  *                                                                        *
- *  Software Version: 1.2                                                 *
+ *  Software Version: 1.4                                                 *
  *                                                                        *
- *  Release Date    : Fri Jan 20 13:17:12 PST 2023                        *
+ *  Release Date    : Mon Jul 17 20:14:44 PDT 2023                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.2.6                                               *
+ *  Release Build   : 1.4.0                                               *
  *                                                                        *
  *  Copyright 2022 Siemens                                                *
  *                                                                        *
@@ -92,6 +92,31 @@
 #include <unistd.h>
 #include <execinfo.h>
 #include <bfd.h>
+#define HAVE_DECL_BASENAME 1
+#include <demangle.h>
+#endif
+
+#if defined(i386) || defined(__i386__) || defined(__i386) || defined(_M_IX86) || defined(__x86_64__) || defined(_M_X64)
+//  x86, x86-64 - The program counter (PC) refers to the instruction 
+//      after the current executed.
+//      As x86 is a CISC architecture, the offset to start of the previous 
+//      instruction address is variable.  However, subtracting one (1) 
+//      will effectively land the address within the range of the 
+//      previous instruction, which is sufficient for retrieving
+//      the correct line information.
+//    -> subtract 1 from the offset
+# define ARCH_PC_OFFSET 1
+#else
+# warning Functionality only tested for x86 architectures; backtrace information may not be accurate
+// For reference only:
+//  Arm - AArch32 - see description of program counter in section 
+//      "The AArch32 Application Level Programmers' Model" 
+//      of "Arm Architecture Reference Manual for A-profile architecture"
+//    - A32 instruction -> PC = current instruction + 8 bytes
+//    - T32 instruction -> PC = current instruction + 4 bytes
+//  RISC-V - The PC refers to the current instruction being executed.
+//        See "The RISC-V Instruction Set Manual"
+# define ARCH_PC_OFFSET 0
 #endif
 
 namespace ac_debug
@@ -119,7 +144,7 @@ namespace ac_debug
   static asymbol **syms = 0;
   static asection *text = 0;
 #endif
-  static void addr2fileLineFunc(char *address, std::stringstream &info, bool optFormat=false) {
+  static void addr2fileLineFunc(char *address, std::stringstream &info, bool optFormat=false, bool ignoreNoDebugInfo = false) {
     info.clear();
     #if defined(_WIN32)
     info << "(" << address << ") no debug info";
@@ -145,31 +170,37 @@ namespace ac_debug
       unsigned cSymbols = bfd_canonicalize_symtab(abfd, syms); (void)cSymbols;
       text = bfd_get_section_by_name(abfd, ".text");
     }
-    long offset = strtol(address,NULL,16) - text->vma;
+
+    long offset = strtol(address,NULL,16) - text->vma - ARCH_PC_OFFSET;
+
     if (offset > 0) {
       const char *file;
       const char *func;
       unsigned line;
       if (bfd_find_nearest_line(abfd, text, syms, offset, &file, &func, &line) && file) {
-        // bug in addr2line lookups - line numbers seem to be off by 1
+        char *func_demangled = bfd_demangle(abfd, func, DMGL_ANSI | DMGL_PARAMS);
+        if (func_demangled != nullptr)
+          func = func_demangled;
         if (optFormat) {
           // LeafFile:Line FileDir 'Func'
           std::string str(file);
           std::regex e("(.*)/(.*)");
           std::smatch sm;
-          std::regex_match(str.cbegin(),str.cend(),sm,e);
+          std::regex_match(str.cbegin(), str.cend(), sm, e);
           if (sm.size()==3) {
-            info << sm[2] << ":" << line-1 << " '" << func << "' " << file << ":" << line-1;
+            info << sm[2] << ":" << line << " '" << func << "' " << file << ":" << line;
           } else {
             // fall back on old form
-            info << file << ":" << line-1 << " '" << func << "'";
+            info << file << ":" << line << " '" << func << "'";
           }
         } else {
           // File:Line 'Func'
-          info << file << ":" << line-1 << " '" << func << "'";
+          info << file << ":" << line << " '" << func << "'";
         }
+        free(func_demangled);
       } else {
-        info << "(" << address << ") no debug info";
+        if (!ignoreNoDebugInfo)
+          info << "(" << address << ") no debug info";
       }
     }
     #endif
@@ -177,28 +208,32 @@ namespace ac_debug
 
   // Function: format_stack_trace
   // Uses BFD addr2line to format a nice stack trace
-  inline std::string format_stack_trace(const std::string key, bool flat=false, bool optFormat=false) {
+  // csvFormat quotes each item in flat output because the demangled name can contain commas
+  inline std::string format_stack_trace(const std::string key, bool flat=false, bool optFormat=false, bool csvFormat=false, bool ignoreNoDebugInfo = false) {
     std::stringstream trace;
     std::regex reg(",");
     std::string pkey(key);
     std::sregex_token_iterator iter(pkey.begin(), pkey.end(), reg, -1);
     std::sregex_token_iterator end;
     std::vector<std::string> vec(iter, end);
-    bool first=true;
+    bool first = true;
     for (auto a : vec) {
       std::stringstream info;
-      addr2fileLineFunc((char*)a.c_str(), info, optFormat);
-      if (flat) {
-        trace << (first?"":", ") << info.str();
-      } else {
-        trace << "    "  << info.str() << std::endl;
+      addr2fileLineFunc((char*)a.c_str(), info, optFormat, ignoreNoDebugInfo);
+      if (info.str().size() > 0) {
+        if (flat) {
+          trace << (first ? "" : csvFormat ? "," : ", ") << (csvFormat ? "\"" : "") << info.str() << (csvFormat ? "\"" : "") ;
+        } else {
+          trace << "    "  << info.str() << std::endl;
+        }
+        first = false;
       }
-      first = false;
     }
     return trace.str();
   }
 
 }
 
+#undef ARCH_PC_OFFSET
 #endif
 
