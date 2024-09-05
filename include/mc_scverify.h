@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Simulation Utilities                               *
  *                                                                        *
- *  Software Version: 1.5                                                 *
+ *  Software Version: 1.6                                                 *
  *                                                                        *
- *  Release Date    : Sun Feb  4 15:24:00 PST 2024                        *
+ *  Release Date    : Wed Feb 21 17:43:38 PST 2024                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.5.0                                               *
+ *  Release Build   : 1.6.0                                               *
  *                                                                        *
  *  Copyright 2020 Siemens                                                *
  *                                                                        *
@@ -245,13 +245,23 @@ inline sc_time scverify_lookup_clk(const char *clkname, double default_period, s
   #define CCS_DESIGN(fn) fn
   #include "ccs_block_macros.h"
 
-  #define __CCS_BLOCK_TOKENPASTE2(a, b)    ccs_intercept_ ## a ##_## b
-  #define __CCS_BLOCK_TOKENPASTE3(a, b, c) ccs_intercept_ ## a ##_## b ##_## c
-  #define  _CCS_BLOCK_TOKENPASTE2(a, b)    __CCS_BLOCK_TOKENPASTE2(a,b)
-  #define  _CCS_BLOCK_TOKENPASTE3(a, b, c) __CCS_BLOCK_TOKENPASTE3(a,b,c)
-  #define  _CCS_BLOCK_TOKENPASTE(a, b, c, ...) c
+  // Scoped CCS_BlOCK(leafscope, routine)
+  //   class top { void CCS_BLOCK(top, run)(...){...} };
+  // Line number not required if the scope and routine names result in a unique expansion
+  #if defined(EXPAND_SCOPED_CCS_BLOCK_LINES)
+    #define __CCS_BLOCK_TOKENPASTE3(a, b, c) ccs_intercept_ ## a ##_## b ##_## c
+  #else
+    #define __CCS_BLOCK_TOKENPASTE3(a, b, c) ccs_intercept_ ## a ##_## b
+  #endif
+  #define _CCS_BLOCK_TOKENPASTE3(a, b, c) __CCS_BLOCK_TOKENPASTE3(a, b, c)
+
+  // CCS_BLOCK(routine) - always use line number in expansion
+  #define __CCS_BLOCK_TOKENPASTE2(a, b) ccs_intercept_ ## a ##_## b
+  #define _CCS_BLOCK_TOKENPASTE2(a, b)  __CCS_BLOCK_TOKENPASTE2(a, b)
+
+  #define _CCS_BLOCK_TOKENPASTE(a, b, c, ...) c
   #define CCS_BLOCK(...) _CCS_BLOCK_TOKENPASTE(__VA_ARGS__, \
-                         _CCS_BLOCK_TOKENPASTE3, _CCS_BLOCK_TOKENPASTE2)(__VA_ARGS__,__LINE__)
+                         _CCS_BLOCK_TOKENPASTE3, _CCS_BLOCK_TOKENPASTE2)(__VA_ARGS__, __LINE__)
 #else
   #define _CCS_BLOCK_BYPASS1(a) a
   #define _CCS_BLOCK_BYPASS2(a, b) b
