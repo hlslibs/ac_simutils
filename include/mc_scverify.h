@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Simulation Utilities                               *
  *                                                                        *
- *  Software Version: 1.6                                                 *
+ *  Software Version: 1.8                                                 *
  *                                                                        *
- *  Release Date    : Wed Feb 21 17:43:38 PST 2024                        *
+ *  Release Date    : Wed Oct  8 22:35:31 PDT 2025                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 1.6.0                                               *
+ *  Release Build   : 1.8.0                                               *
  *                                                                        *
  *  Copyright 2020 Siemens                                                *
  *                                                                        *
@@ -255,9 +255,15 @@ inline sc_time scverify_lookup_clk(const char *clkname, double default_period, s
   #endif
   #define _CCS_BLOCK_TOKENPASTE3(a, b, c) __CCS_BLOCK_TOKENPASTE3(a, b, c)
 
-  // CCS_BLOCK(routine) - always use line number in expansion
-  #define __CCS_BLOCK_TOKENPASTE2(a, b) ccs_intercept_ ## a ##_## b
-  #define _CCS_BLOCK_TOKENPASTE2(a, b)  __CCS_BLOCK_TOKENPASTE2(a, b)
+  #if defined(FORCE_SCOPED_CCS_BLOCK)
+    // All scoped routines require the leafscope argument, CCS_BLOCK(leafscope, routine)
+    // CCS_BLOCK(routine) - use empty 'global' scope in expansion (functions only)
+    #define _CCS_BLOCK_TOKENPASTE2(a, b)  __CCS_BLOCK_TOKENPASTE3(, a, b)
+  #else
+    // CCS_BLOCK(routine) - always use line number in expansion
+    #define __CCS_BLOCK_TOKENPASTE2(a, b) ccs_intercept_ ## a ##_## b
+    #define _CCS_BLOCK_TOKENPASTE2(a, b)  __CCS_BLOCK_TOKENPASTE2(a, b)
+  #endif
 
   #define _CCS_BLOCK_TOKENPASTE(a, b, c, ...) c
   #define CCS_BLOCK(...) _CCS_BLOCK_TOKENPASTE(__VA_ARGS__, \
