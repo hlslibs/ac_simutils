@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Simulation Utilities                               *
  *                                                                        *
- *  Software Version: 2025.4                                              *
+ *  Software Version: 2026.1                                              *
  *                                                                        *
- *  Release Date    : Thu Dec 11 11:01:15 PST 2025                        *
+ *  Release Date    : Tue Feb 10 18:56:14 PST 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2025.4.1                                            *
+ *  Release Build   : 2026.1.0                                            *
  *                                                                        *
  *  Copyright 2020 Siemens                                                *
  *                                                                        *
@@ -291,7 +291,7 @@ namespace ac {
 
   // Synthesizable assert "ac_ovl_assert"
   inline void ac_ovl_assert(const char *filename, int lineno, const char *expr_str, bool expr
-#ifndef CALYPTO_SC
+#if !defined(__SYNTHESIS__)
   , bool quiet=false
   , bool do_abort=false
 #endif

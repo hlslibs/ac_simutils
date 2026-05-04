@@ -2,11 +2,11 @@
  *                                                                        *
  *  Algorithmic C (tm) Simulation Utilities                               *
  *                                                                        *
- *  Software Version: 2025.4                                              *
+ *  Software Version: 2026.1                                              *
  *                                                                        *
- *  Release Date    : Thu Dec 11 11:01:15 PST 2025                        *
+ *  Release Date    : Tue Feb 10 18:56:14 PST 2026                        *
  *  Release Type    : Production Release                                  *
- *  Release Build   : 2025.4.1                                            *
+ *  Release Build   : 2026.1.0                                            *
  *                                                                        *
  *  Copyright 2022 Siemens                                                *
  *                                                                        *
@@ -209,7 +209,7 @@ namespace ac_debug
       const char *file;
       const char *func;
       unsigned line;
-      if (bfd_find_nearest_line(abfd, text, syms, offset, &file, &func, &line) && file) {
+      if (bfd_find_nearest_line(abfd, text, syms, offset, &file, &func, &line) && file && func) {
         char *func_demangled = bfd_demangle(abfd, func, DMGL_ANSI | DMGL_PARAMS);
         if (func_demangled != nullptr)
           func = func_demangled;
